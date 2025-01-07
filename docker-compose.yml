@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      dockerfile: ./docker/php-fpm/Dockerfile
+    volumes:
+      - ./nebus-tz:/var/www/html
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./nebus-tz:/var/www/html
+      - ./docker/nginx/conf/custom.conf:/etc/nginx/conf.d/default.conf  # Mount Nginx config
+    ports:
+      - "80:80"  # Expose Nginx on port 9000
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: orgdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+networks:
+  app-network:
+    driver: bridge
+
