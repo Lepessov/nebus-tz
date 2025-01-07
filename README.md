@@ -4,8 +4,7 @@
 #### 1. Клонируйте репозиторий
 
 ```bash
-git clone https://github.com/yourusername/organization-api.git
-cd organization-api
+git clone https://github.com/Lepessov/nebus-tz.git
 ```
 
 #### 2. Соберите Docker образы
@@ -30,6 +29,10 @@ docker-compose up -d
 
 ```bash
 docker-compose exec app bash
+```
+Выполните 
+```
+composer install
 ```
 
 Выполните миграции и сидеры для наполнения базы данных:
