@@ -30,6 +30,10 @@ docker-compose up -d
 ```bash
 docker-compose exec app bash
 ```
+Выполните 
+```
+composer install
+```
 
 Выполните миграции и сидеры для наполнения базы данных:
 
