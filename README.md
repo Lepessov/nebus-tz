@@ -2,8 +2,8 @@
 
 ## Установка и запуск через Docker
 #### 1. Клонируйте репозиторий
+
 ```bash
-Copy code
 git clone https://github.com/yourusername/organization-api.git
 cd organization-api
 ```
@@ -12,14 +12,12 @@ cd organization-api
 Запустите команду для сборки Docker-образов:
 
 ```bash
-Copy code
 docker-compose build
 ```
 #### 3. Запустите контейнеры
 Запустите все сервисы с помощью Docker Compose:
 
 ```bash
-Copy code
 docker-compose up -d
 ```
 
@@ -31,19 +29,29 @@ docker-compose up -d
 Подключитесь к контейнеру приложения:
 
 ```bash
-Copy code
 docker-compose exec app bash
 ```
 
 Выполните миграции и сидеры для наполнения базы данных:
 
 ```bash
-Copy code
 php artisan migrate --seed
 ```
 
-5. Получите доступ к API
+#### 5. Получите доступ к API
 Теперь API будет доступно по адресу: http://localhost.
+
+### Swagger
+
+В контейнере прописать
+
+```
+composer require "darkaonline/l5-swagger"
+php artisan vendor:publish --provider="L5Swagger\L5SwaggerServiceProvider"
+php artisan l5-swagger:generate
+```
+
+доки доступны в api/documentation
 
 Использование API
 Аутентификация
@@ -53,7 +61,6 @@ API_KEY: ваш-api-ключ
 API ключ можно настроить в файле .env:
 
 env
-Copy code
 ```
 API_KEY=ваш-реальный-api-ключ
 ```
@@ -63,7 +70,6 @@ API_KEY=ваш-реальный-api-ключ
 Чтобы остановить контейнеры:
 
 ```bash
-Copy code
 docker-compose down
 ```
 
@@ -74,7 +80,6 @@ docker-compose down
 Запустите тесты с помощью PHPUnit в контейнере:
 
 ```bash
-Copy code
 docker-compose exec app bash
 php artisan test
 ```
@@ -83,52 +88,31 @@ php artisan test
 Ваши контейнеры используют следующие пути:
 
 #### 1. Получить организации по зданию
-Метод: GET
-URL: /api/organizations/building/{buildingId}
-Описание: Получить все организации, связанные с указанным зданием по его ID.
-Параметры:
-buildingId (integer) — ID здания.
-Ответ: JSON массив организаций.
+Метод: GET \
+URL: /api/organizations/building/{buildingId} \
+Описание: Получить все организации, связанные с указанным зданием по его ID. \
+
 #### 2. Получить организации по виду деятельности
 Метод: GET
-URL: /api/organizations/activity/{activityId}
-Описание: Получить все организации, относящиеся к указанному виду деятельности.
-Параметры:
-activityId (integer) — ID вида деятельности.
-Ответ: JSON массив организаций.
-#### 3. Получить организации по имени вида деятельности
-Метод: GET
-URL: /api/organizations/activity-name
-Описание: Получить все организации, относящиеся к виду деятельности по его названию (поиск по имени).
-Параметры:
-activity_name (string) — Название вида деятельности.
-Ответ: JSON массив организаций.
-#### 4. Получить организацию по ID
-Метод: GET
-URL: /api/organization/{id}
-Описание: Получить информацию об организации по её ID.
-Параметры:
-id (integer) — ID организации.
-Ответ: JSON объект организации.
-#### 5. Поиск организаций по имени
-Метод: GET
-URL: /api/organizations/search/{name}
-Описание: Найти организации, название которых частично совпадает с переданным.
-Параметры:
-name (string) — Часть или полное название организации.
-Ответ: JSON массив организаций.
-#### 6. Получить организации в радиусе от заданной точки
-Метод: GET
-URL: /api/organizations/near
-Описание: Получить список организаций в пределах заданного радиуса от указанной точки на карте.
-Параметры:
-latitude (float) — Широта точки.
-longitude (float) — Долгота точки.
-radius (float) — Радиус поиска в километрах.
-Ответ: JSON массив организаций.
+URL: /api/organizations/activity/{activityId} \
+Описание: Получить все организации, относящиеся к указанному виду деятельности. \
 
-Приложение Laravel монтируется в контейнер app из локальной директории ./nebus-tz:
-Исходный код: ./nebus-tz → /var/www/html в контейнере
-Настройки Nginx монтируются в контейнер nginx из ./docker/nginx/conf/custom.conf → /etc/nginx/conf.d/default.conf в контейнере.
-База данных MySQL использует папку ./mysql-init для инициализации данных.
-Теперь всё настроено для работы через Docker. Запуск сервиса не требует дополнительной настройки, достаточно выполнить docker-compose up, и все контейнеры автоматически запустятся.
+#### 3. Получить организации по имени вида деятельности
+Метод: GET \
+URL: /api/organizations/activity-name \
+Описание: Получить все организации, относящиеся к виду деятельности по его названию (поиск по имени). \
+
+#### 4. Получить организацию по ID
+Метод: GET \
+URL: /api/organization/{id} \
+
+#### 5. Поиск организаций по имени
+Метод: GET \
+URL: /api/organizations/search/{name} \
+Описание: Найти организации, название которых частично совпадает с переданным. \
+
+#### 6. Получить организации в радиусе от заданной точки
+Метод: GET \
+URL: /api/organizations/near \
+Описание: Получить список организаций в пределах заданного радиуса от указанной точки на карте. \
+
